@@ -22,15 +22,12 @@ jobs:
       - name: Build Docker image
         run: docker build -t reactjs:latest .
 
-      - name: Stop old container (if running)
+      - name: Stop old container 
         run: |
           docker stop reactjs || true
           docker rm reactjs || true
 
       - name: Run Docker container
         run: |
-          docker run -d \
-            --name reactjs \
-            -p 3010:3000 \ 
-            reactjs:latest
+          docker run -d --name reactjs -p 3010:3000 reactjs:latest
 
