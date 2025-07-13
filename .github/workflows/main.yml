@@ -1,0 +1,33 @@
+name: Deploy with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted  
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+
+      - name: Build Docker image
+        run: docker build -t reactjs:latest .
+
+      - name: Stop old container 
+        run: |
+          docker stop reactjs || true
+          docker rm reactjs || true
+
+      - name: Run Docker container
+        run: |
+          docker run -d --name reactjs -p 3010:3000 reactjs:latest
+
